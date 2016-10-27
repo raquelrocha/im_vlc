@@ -13,6 +13,16 @@ namespace VLC_Control
     {
         static void Main()
         {
+            new SpeechRecognizer();
+            
+            /*Console.WriteLine("Press enter to close...");
+            Console.ReadLine();*/
+        }
+        
+    }
+}
+
+/*
             // Create a request for the URL. 
             WebRequest request = WebRequest.Create("http://127.0.0.1:8080/requests/status.xml?command=pl_stop");
             var credential = Convert.ToBase64String(Encoding.Default.GetBytes(":123456"));
@@ -32,10 +42,4 @@ namespace VLC_Control
             // Clean up the streams and the response.
             reader.Close();
             response.Close();
-
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
-        }
-        
-    }
-}
+            */
