@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VLC_Control")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Multimodal App to control VLC by Voice")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("UA_IM_CB_RR")]
 [assembly: AssemblyProduct("VLC_Control")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
