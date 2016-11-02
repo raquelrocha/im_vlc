@@ -85,7 +85,7 @@ namespace VLC_Control
                 tts.Speak("Pronto a receber pedidos");
                 Console.WriteLine("Pronto a receber ordens");
             }
-            
+
             // Keep the console window open.
             /*while (true)
             {
@@ -93,36 +93,66 @@ namespace VLC_Control
             }*/
         }
 
-        void doOperations(WebRequest operation) {
-            // Create a request for the URL. 
-            WebRequest request = operation;
-            var credential = Convert.ToBase64String(Encoding.Default.GetBytes(":123456"));
-            request.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-            // Get the response.
-            WebResponse response = request.GetResponse();
-            // Display the status.
-            //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-            // Get the stream containing content returned by the server.
-            Stream dataStream = response.GetResponseStream();
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string responseFromServer = reader.ReadToEnd();
-            // Display the content.
-            //Console.WriteLine(responseFromServer);
-            // Clean up the streams and the response.
-            reader.Close();
-            response.Close();
-        }
 
         void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             Console.WriteLine("---------------------------------------------");
             Console.WriteLine("Texto reconhecido: " + e.Result.Text);
             Console.WriteLine("Confiança: " + e.Result.Confidence);
-            Console.WriteLine("---------------Semantics----------------");
-            Console.WriteLine(e.Result.Semantics);
-            Console.WriteLine(e.Result.Semantics.Value);
+            if (e.Result.Confidence > 0.65)
+            {
+                foreach (KeyValuePair<string, SemanticValue> r in e.Result.Semantics)
+                {
+                    Console.WriteLine(r.Key + ":" + r.Value.Value.ToString());
+
+                    switch (r.Value.Value.ToString())
+                    {
+                        case "reproduzir":
+                            Console.WriteLine("XXXx");
+                            request.play();
+                            break;
+                        case "parar":
+                            request.stop();
+                            break;
+                        case "próxima":
+                            request.nextFile();
+                            break;
+                        case "anterior":
+                            request.previousFile();
+                            break;
+                        case "alto":
+                            request.changeVolume(1);
+                            break;
+                        case "baixo":
+                            request.changeVolume(-1);
+                            break;
+                        case "mute":
+                            request.changeVolume(0);
+                            break;
+                        case "pausar":
+                            request.pause();
+                            break;
+                        case "voz feminina":
+                            tts.changeGender(Microsoft.Speech.Synthesis.VoiceGender.Female);
+                            break;
+                        case "voz masculina":
+                            tts.changeGender(Microsoft.Speech.Synthesis.VoiceGender.Male);
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+
+            }
+            else if (e.Result.Confidence < 0.25)
+                tts.Speak("Repita que eu não entendi.");
+            else if (e.Result.Confidence < 0.50)
+                tts.Speak("Importa-se de repetir?");
+            else
+                tts.Speak("Não entendi, repita se faz favor.");
         }
     }
 }
+
+

@@ -8,226 +8,89 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
   <rule id="command">
     <one-of>
       <item>
-        <ruleref uri="#PlayMusic"/>
+        <ruleref uri="#Vontades"/>
+        <ruleref uri="#Operacoes"/>
+        <tag>out.operacao = rules.Operacoes.operacao</tag>
+        <ruleref uri="#Determinantes"/>
+        <ruleref uri="#tipoFicheiro" />
+        <tag>out.tipo = rules.tipoFicheiro.tipo;</tag>
       </item>
       <item>
-        <ruleref uri="#StopMusic"/>
-      </item>
-      <item>
-        <ruleref uri="#Next"/>
-      </item>
-      <item>
-        <ruleref uri="#LastMusic"/>
-      </item>
-      <item>
-        <ruleref uri="#Ajuda"/>
-      </item>
-      <item>
-        <ruleref uri="#Listas"/>
-      </item>
-      <item>
-        <ruleref uri="#AbrirLista"/>
+        <ruleref uri="#Vontades"/>
+        <ruleref uri="#Determinantes"/>
+        <ruleref uri="#tipoFicheiro" />
+        <tag>out.tipo = rules.tipoFicheiro.tipo;</tag>
       </item>
     </one-of>
   </rule>
 
-  <rule id="Listas">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">quero escolher uma lista</item>
-        <item weight="2">mostra-me as listas     </item>
-        <item weight="2">listas                  </item>
-        <item weight="2">ver listas              </item>
-        <item weight="2">que listas tens?        </item>
-      </one-of>
-      <tag>out = "Listas"</tag>
-    </item>
-  </rule>
-
-
-
-  <rule id="AbrirLista">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">quero esta lista 		 </item>
-        <item weight="2">quero esta 		     </item>
-        <item weight="2">seleccionar             </item>
-        <item weight="2">reproduzir esta         </item>
-        <item weight="2">quero ouvir esta lista  </item>
-        <item weight="2">quero ouvir esta 		 </item>
-        <item weight="2">toca esta				 </item>
-      </one-of>
-      <tag>out = "AbrirListas"</tag>
-    </item>
-  </rule>
-
-
-  <rule id="Ajuda">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">preciso de ajuda        </item>
-        <item weight="2">ajuda-me 			     </item>
-        <item weight="2">socorro                 </item>
-        <item weight="2">como se usa isto?       </item>
-        <item weight="2">mostra-me o tutorial    </item>
-        <item weight="2">tutorial				 </item>
-        <item weight="2">quero ver o tutorial    </item>
-      </one-of>
-      <tag>out = "Ajuda"</tag>
-    </item>
-  </rule>
-
-
-
-  <rule id="PlayMusic">
-    <tag>x="";y="";</tag>
+  <rule id="Vontades">
     <item>
-      <ruleref uri="#reproduzir"/>
-      <tag>x =rules.latest()</tag>
+      <one-of>
+        <item weight="2">Quero</item>
+        <item weight="2">Acho </item>
+        <item weight="2">Preciso </item>
+      </one-of>
     </item>
-    <item repeat="0-1">
-      <ruleref uri="#objecto"/>
-      <tag>y =rules.latest()</tag>
-    </item>
-    <tag>out =x +" "+ y</tag>
   </rule>
 
-  <rule id="StopMusic">
+  <rule id="Operacoes">
     <item>
-      <ruleref uri="#parar"/>
-    </item>
-    <item repeat="0-1">
-      <ruleref uri="#objecto"/>
-    </item>
-    <tag>out = "parar"</tag>
-  </rule>
-
-
-  <rule id="LastMusic">
-    <tag>x="";y="";</tag>
-    <one-of>
-      <item>
-        <item repeat="1">
-          <ruleref uri="#ultima"/>
-          <tag>x = rules.latest()</tag>
-        </item>
-        <item repeat="0-1">
-          <ruleref uri="#objecto"/>
-          <tag>y += rules.latest()</tag>
-        </item>
-        <tag>out =x +" "+ y</tag>
-      </item>
-      <item>
-        <item repeat="0-1">
-          <ruleref uri="#objecto"/>
-          <tag>y += rules.latest()</tag>
-        </item>
-        <item repeat="1">
-          <ruleref uri="#ultima"/>
-          <tag>x = rules.latest()</tag>
-        </item>
-        <tag>out =x +" "+ y</tag>
-      </item>
-    </one-of>
-  </rule>
-
-  <rule id="Next">
-    <tag>x="";y="";</tag>
-    <one-of>
-      <item>
-        <item repeat="1">
-          <ruleref uri="#proxima"/>
-          <tag>x =rules.latest()</tag>
-        </item>
-        <item repeat="0-1">
-          <ruleref uri="#objecto"/>
-          <tag>y =rules.latest()</tag>
-        </item>
-        <tag>out =x +" "+ y</tag>
-      </item>
-      <item>
-        <item repeat="0-1">
-          <ruleref uri="#objecto"/>
-          <tag>y =rules.latest()</tag>
-        </item>
-        <item repeat="1">
-          <ruleref uri="#proxima"/>
-          <tag>x =rules.latest()</tag>
-        </item>
-        <tag>out =x +" "+ y</tag>
-      </item>
-    </one-of>
-  </rule>
-
-
-  <rule id="reproduzir">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">quero ouvir      </item>
-        <item weight="2">apetece-me ouvir </item>
-        <item weight="2">toca             </item>
-        <item weight="2">mete             </item>
-        <item weight="2">reproduzir       </item>
-      </one-of>
-      <tag>out = "reproduzir"</tag>
-    </item>
-
-  </rule>
-
-  <rule id="parar">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">pára  </item>
-        <item weight="2">parar </item>
-        <item weight="2">cala  </item>
-      </one-of>
-    </item>
-  </rule>
-
-
-  <rule id="proxima">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">próxima  </item>
-        <item weight="2">seguinte </item>
-        <item weight="2">estou farto desta  </item>
-        <item weight="2">a seguir  </item>
-      </one-of>
-      <tag> out= "próxima"</tag>
-    </item>
-  </rule>
-
-  <rule id="ultima">
-    <item repeat="0-1">
-      <one-of>
-        <item weight="2">última </item>
-        <item weight="2">anterior </item>
-        <item weight="2">volta atrás  </item>
-        <item weight="2">quero a outra  </item>
-        <item weight="2">queria a outra  </item>
-      </one-of>
-      <tag>out= "última"</tag>
-    </item>
-  </rule>
-
-
-  <rule id="objecto">
-    <item repeat="0-1">
       <one-of>
         <item weight="2">
-          música <tag>out=""</tag>
+          ouvir
+          <tag>out.operacao = "reproduzir"</tag>
         </item>
         <item weight="2">
-          lista <tag>out="lista"</tag>
+          ver
+          <tag>out.operacao = "reproduzir"</tag>
         </item>
         <item weight="2">
-          lista de reprodução <tag>out="lista"</tag>
+          fazer um intervalo
+          <tag>out.operacao = "pausar"</tag>
         </item>
         <item weight="2">
-          playlist <tag>out="lista"</tag>
+          pausar <tag>out.operacao = "pausar"</tag>
+        </item>
+
+        <item weight="2">
+          parar<tag>out.operacao = "parar"</tag>
+        </item>
+        <item weight="2">
+          silêncio <tag>out.operacao = "mute"</tag>
         </item>
       </one-of>
     </item>
   </rule>
+  <rule id="Determinantes">
+    <item>
+      <one-of>
+        <item weight="2">a </item>
+        <item weight="2">o </item>
+        <item weight="2">as </item>
+        <item weight="2">os </item>
+        <item weight="2">um </item>
+        <item weight="2">que </item>
+        <item weight="2">de </item>
+      </one-of>
+    </item>
+  </rule>
 
+  <rule id="tipoFicheiro">
+    <item>
+      <one-of>
+        <item weight="2">
+          música <tag>out.tipo = "música"</tag>
+        </item>
+        <item weight="2">
+          filme <tag>out.tipo = "filme"</tag>
+        </item>
+        <item weight="2">as </item>
+        <item weight="2">os </item>
+        <item weight="2">um </item>
+        <item weight="2">que </item>
+        <item weight="2">de </item>
+      </one-of>
+    </item>
+  </rule>
 </grammar>

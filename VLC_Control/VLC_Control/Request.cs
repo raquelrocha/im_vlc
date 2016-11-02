@@ -27,11 +27,14 @@ namespace VLC_Control
 
         }
 
+        string credential = Convert.ToBase64String(Encoding.Default.GetBytes(":123456"));
         public void stop()
         {
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_stop");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -44,6 +47,8 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_play");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -56,6 +61,8 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_pause");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -87,6 +94,8 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=volume&val=" + varVol); //mute
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -101,6 +110,8 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=fullscreen");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -113,6 +124,8 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_next");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
@@ -126,6 +139,9 @@ namespace VLC_Control
             try
             {
                 httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_previous");
+
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
             }
             catch (HttpListenerException)
             {
