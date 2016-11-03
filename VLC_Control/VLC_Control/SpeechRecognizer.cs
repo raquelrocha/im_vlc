@@ -87,10 +87,10 @@ namespace VLC_Control
             }
 
             // Keep the console window open.
-            /*while (true)
+            while (true)
             {
                 Console.ReadLine();
-            }*/
+            }
         }
 
 
@@ -131,6 +131,9 @@ namespace VLC_Control
                             break;
                         case "pausar":
                             request.pause();
+                            break;
+                        case "fullscreen":
+                            request.fullScreen();
                             break;
                         case "voz feminina":
                             tts.changeGender(Microsoft.Speech.Synthesis.VoiceGender.Female);

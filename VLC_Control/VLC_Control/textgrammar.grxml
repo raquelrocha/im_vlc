@@ -7,89 +7,166 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
 
   <rule id="command">
     <one-of>
-      <item>
-        <ruleref uri="#Vontades"/>
-        <ruleref uri="#Operacoes"/>
-        <tag>out.operacao = rules.Operacoes.operacao</tag>
-        <ruleref uri="#Determinantes"/>
-        <ruleref uri="#tipoFicheiro" />
-        <tag>out.tipo = rules.tipoFicheiro.tipo;</tag>
+      <item weight="5">
+        <ruleref uri="#tocar"/>
       </item>
-      <item>
-        <ruleref uri="#Vontades"/>
-        <ruleref uri="#Determinantes"/>
-        <ruleref uri="#tipoFicheiro" />
-        <tag>out.tipo = rules.tipoFicheiro.tipo;</tag>
+      <item weight="4">
+        <ruleref uri="#parar"/>
       </item>
+      <item weight="4">
+        <ruleref uri="#pausar"/>
+      </item>
+      <item weight="2">
+        <ruleref uri="#imagem"/>
+      </item>
+      <item weight="4">
+        <ruleref uri="#volume"/>
+      </item>
+
+
     </one-of>
   </rule>
 
-  <rule id="Vontades">
+  <rule id="volume">
     <item>
       <one-of>
-        <item weight="2">Quero</item>
-        <item weight="2">Acho </item>
-        <item weight="2">Preciso </item>
+        <item weight="2">
+          Quero silêncio<tag>out.vontade = "mute"</tag>
+        </item>
+        <item weight="2">
+          Está muito alto<tag>out.vontade = "baixo"</tag><!-- para diminuir -->
+        </item>
+        <item weight="2">
+          Está muito baixo<tag>out.vontade = "alto"</tag><!-- para aumentar-->
+        </item>
+        <item weight="2">
+          Preciso de silêncio<tag>out.vontade = "mute"</tag>
+        </item>
+        <item weight="2">
+          Quero silêncio<tag>out.vontade = "mute"</tag>
+        </item>
       </one-of>
     </item>
   </rule>
 
-  <rule id="Operacoes">
+
+  <rule id="imagem">
     <item>
       <one-of>
         <item weight="2">
-          ouvir
-          <tag>out.operacao = "reproduzir"</tag>
+          Quero ecrã inteiro<tag>out.vontade = "fullscreen"</tag>
         </item>
         <item weight="2">
-          ver
-          <tag>out.operacao = "reproduzir"</tag>
-        </item>
-        <item weight="2">
-          fazer um intervalo
-          <tag>out.operacao = "pausar"</tag>
-        </item>
-        <item weight="2">
-          pausar <tag>out.operacao = "pausar"</tag>
-        </item>
-
-        <item weight="2">
-          parar<tag>out.operacao = "parar"</tag>
-        </item>
-        <item weight="2">
-          silêncio <tag>out.operacao = "mute"</tag>
+          Não quero o ecrã inteiro<tag>out.vontade = "notfullscreen"</tag>
         </item>
       </one-of>
     </item>
   </rule>
-  <rule id="Determinantes">
+
+  <rule id="tocar">
     <item>
       <one-of>
-        <item weight="2">a </item>
-        <item weight="2">o </item>
-        <item weight="2">as </item>
-        <item weight="2">os </item>
-        <item weight="2">um </item>
-        <item weight="2">que </item>
-        <item weight="2">de </item>
+        <item weight="2">
+          Quero voltar a ouvir<tag>out.vontade = "reproduzir"</tag>
+        </item>
+        <item weight="2">
+          Quero ouvir a música<tag>out.vontade = "reproduzir"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o filme<tag>out.vontade = "reproduzir"</tag>
+        </item>
+        <item weight="2">
+          Quero voltar a ver<tag>out.vontade = "reproduzir"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o filme seguinte<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o próximo filme<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o seguinte<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o filme anterior<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ver o anterior<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ouvir a música seguinte<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ouvir a próxima música<tag>out.vontade = "seguinte"</tag>
+        </item>
+        <item weight="2">
+          Quero ouvir a seguinte<tag>out.vontade = "seguinte"</tag>
+        </item>
+      
       </one-of>
     </item>
   </rule>
 
-  <rule id="tipoFicheiro">
+  <rule id="parar">
     <item>
       <one-of>
         <item weight="2">
-          música <tag>out.tipo = "música"</tag>
+          Já não quero ouvir<tag>out.vontade = "parar"</tag>
         </item>
         <item weight="2">
-          filme <tag>out.tipo = "filme"</tag>
+          Já não quero ouvir a música<tag>out.vontade = "parar"</tag>
         </item>
-        <item weight="2">as </item>
-        <item weight="2">os </item>
-        <item weight="2">um </item>
-        <item weight="2">que </item>
-        <item weight="2">de </item>
+        <item weight="2">
+          Já não quero ver<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Já não quero ver o filme<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Não quero ouvir<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Não quero ouvir mais músicas<tag>out.vontade = "parar"</tag>
+        </item>
+        
+        <item weight="2">
+          Não quero ouvir mais<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Não quero ver<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Não quero ver mais filmes<tag>out.vontade = "parar"</tag>
+        </item>
+        <item weight="2">
+          Não quero ver mais<tag>out.vontade = "parar"</tag>
+        </item>
+      </one-of>
+    </item>
+  </rule>
+
+
+    <rule id="pausar">
+    <item>
+      <one-of>
+        <item weight="2">
+          Quero fazer um intervalo<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Quero fazer uma pausa<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Preciso de um intervalo<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Preciso de uma pausa<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Volto já<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Já venho<tag>out.vontade = "pausar"</tag>
+        </item>
       </one-of>
     </item>
   </rule>

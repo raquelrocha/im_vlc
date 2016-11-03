@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -12,6 +13,8 @@ namespace VLC_Control
     {
         String address = "127.0.0.1:8080";
         HttpWebRequest httpreq;
+        Dictionary<string, Dictionary<string, string>> playlist;
+        //{tipo: {nome:uri}}
 
         /*
         TODO:
@@ -25,6 +28,8 @@ namespace VLC_Control
                 this.address = address;
             }
 
+            this.playlist = new Dictionary<string, Dictionary<string, string>>();
+            //createPlayLists();
         }
 
         string credential = Convert.ToBase64String(Encoding.Default.GetBytes(":123456"));
@@ -73,21 +78,21 @@ namespace VLC_Control
 
         public void changeVolume(int op)// op = 0 - mute, -1 - lower, 1 - rise 
         {
-            int varVol = 0;
+            string varVol = "0";
             //para ter o simbolo % no url temos q meter o código %25!!!
             switch (op)
             {
                 case 0:
-                    varVol = 0;
+                    varVol = "0";
                     break;
                 case 1:
-                    varVol = 25;
+                    varVol = "+25";
                     break;
                 case -1:
-                    varVol = -25;
+                    varVol = "-25";
                     break;
                 default:
-                    varVol = 400;
+                    varVol = "400";
                     break;
             }
 
@@ -152,8 +157,8 @@ namespace VLC_Control
         /* TODO:
         Verificar quais são as "tarefas que faltam implementar 
         - incluíndo as que estão em comentário pq não estão feitas!!! */
-        
-        
+
+
         /*public WebRequest openFile(String name)
         {
             //search name in directory
@@ -202,5 +207,68 @@ namespace VLC_Control
             select playlist (nsei se ja está em cima)
 
         */
+
+
+        /*public string getFile(string fname) {
+            foreach (KeyValuePair<string, Dictionary<string, string>> dic in playlist) {
+                Dictionary<string, string> aux = dic.Value;
+                if (aux.ContainsKey(fname)) {
+                    return aux[fname];
+                }
+            }
+            return "";
+        }*/
+
+        
+        /*private void createPlayLists()
+        {
+            string dir = System.IO.Directory.GetCurrentDirectory() + "\\musicas";
+
+            if (System.IO.Directory.Exists(dir))
+                foreach (string s in System.IO.Directory.GetFiles(dir))
+                {
+                    Console.WriteLine("----------");
+                    System.IO.FileInfo fi = null;
+                    try
+                    {
+                        fi = new System.IO.FileInfo(s);
+                    }
+                    catch (System.IO.FileNotFoundException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    TagLib.File f = TagLib.File.Create(fi.FullName);
+                    
+                    foreach (string g in f.Tag.Genres) {
+                        Console.WriteLine(g);
+                        if (this.playlist.ContainsKey(g))
+                        {
+                                this.playlist[g][f.Tag.Title] = fi.FullName;
+                        }
+                        else
+                        {
+                            Dictionary<string, string> dic = new Dictionary<string, string>();
+                            dic.Add(f.Tag.Title, fi.FullName);
+                            this.playlist.Add(g, dic);
+                        }    
+                    }
+                    foreach (KeyValuePair<string, Dictionary<string,string>> entry in this.playlist)
+                    {
+                        Console.Write(entry.Key + ": \n");
+                        foreach (KeyValuePair<string, string> dic in entry.Value)
+                            Console.Write(dic.Key + ":\n" + dic.Value + "\n");
+                    }
+
+
+                    Console.WriteLine("----------");
+                }
+
+            Console.WriteLine("\n");
+        }
+        string playlistActual;
+        public void playPlaylist(string playlist) {
+
+        }*/
     }
 }
