@@ -34,16 +34,16 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
           Quero silêncio<tag>out.vontade = "mute"</tag>
         </item>
         <item weight="2">
-          Está muito alto<tag>out.vontade = "baixo"</tag><!-- para diminuir -->
-        </item>
-        <item weight="2">
-          Está muito baixo<tag>out.vontade = "alto"</tag><!-- para aumentar-->
-        </item>
-        <item weight="2">
           Preciso de silêncio<tag>out.vontade = "mute"</tag>
         </item>
         <item weight="2">
-          Quero silêncio<tag>out.vontade = "mute"</tag>
+          Está muito alto<tag>out.vontade = "baixo"</tag>
+        </item>
+        <item weight="2">
+          Está muito baixo<tag>out.vontade = "alto"</tag>
+        </item>
+        <item weight="2">
+          Está mesmo muito baixo<tag>out.vontade = "maisalto"</tag>
         </item>
       </one-of>
     </item>
@@ -88,13 +88,14 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
           Quero ver o seguinte<tag>out.vontade = "seguinte"</tag>
         </item>
         <item weight="2">
-          Quero ver o filme anterior<tag>out.vontade = "seguinte"</tag>
-        </item>
-        <item weight="2">
-          Quero ver o anterior<tag>out.vontade = "seguinte"</tag>
+          Quero ver o filme anterior<tag>out.vontade = "anterior"</tag>
         </item>
         <item weight="2">
           Quero ouvir a música seguinte<tag>out.vontade = "seguinte"</tag>
+        </item>
+        
+        <item weight="2">
+          Quero ouvir a música anterior<tag>out.vontade = "anterior"</tag>
         </item>
         <item weight="2">
           Quero ouvir a próxima música<tag>out.vontade = "seguinte"</tag>
@@ -102,6 +103,13 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
         <item weight="2">
           Quero ouvir a seguinte<tag>out.vontade = "seguinte"</tag>
         </item>
+        <item weight="1">
+          Quero ouvir a musica Bleed it out<tag>out.vontade = "Bleed it out"</tag>
+        </item>
+        <item weight="1">
+          Quero ouvir rock<tag>out.vontade = "Rock"</tag>
+        </item>
+        
       
       </one-of>
     </item>

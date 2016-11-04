@@ -104,16 +104,37 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="musicas\blink182MissYou.mp3">
+    <Content Include="musicas\Alanis Morissette - Ironic.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="musicas\Linkin Park - Bleed It Out %28Video%29.mp3">
+    <Content Include="musicas\Amy Winehouse - Back To Black.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="musicas\Linkin Park - Breaking The Habit %28Official Music Video%29.mp3">
+    <Content Include="musicas\Duran Duran - Ordinary World.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="musicas\Lucy Spraggan _ Last Night %28Beer Fear%29 _ Official Music Video HD.mp3">
+    <Content Include="musicas\GNR - Popless.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\KISS - I Was Made For Loving You.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\Natalie Imbruglia - Torn.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\Neneh Cherry - Woman.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\pink floyd - another brick in the wall.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\Queen - Bohemian Rhapsody.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\Rui Veloso - Cavaleiro Andante.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="musicas\Sara Tavares- Eu Sei.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
