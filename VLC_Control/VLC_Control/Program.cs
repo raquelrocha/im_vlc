@@ -7,9 +7,9 @@ namespace VLC_Control
         static void Main()
         {
             Request req = new Request();
-            new SpeechRecognizer("textgrammar.grxml", req); // Remover path absoluto!!
+            new SpeechRecognizer("textgrammar.grxml", req);
 
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
     }

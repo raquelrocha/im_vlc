@@ -17,13 +17,8 @@ namespace VLC_Control
         Dictionary<string,string> playlistAtual;
         Dictionary<string, Dictionary<string, string>> playlist;
         int quantidade = 0;
-        HashSet<string> tipos;
-        //{tipo: {nome:uri}}
-
-        /*
-        TODO:
-            var to store the Playlist!!!!!
-        */
+        HashSet<string> tipos; //{tipo: {nome:uri}}
+        string tipo = "";
 
         public Request(string address = null)
         {
@@ -39,7 +34,8 @@ namespace VLC_Control
             createPlayLists();
             updatePlayListAtual();
         }
-        private void updatePlayListAtual() {
+        public void updatePlayListAtual() {
+            playlistAtual = new Dictionary<string, string>();
             foreach (Dictionary<string, string> dic in playlist.Values) {
                 foreach (KeyValuePair<string, string> musicas in dic)
                 {
@@ -64,7 +60,7 @@ namespace VLC_Control
             }
             catch (HttpListenerException)
             {
-                //Console.WriteLine("Erro no pedido. Volte a tentar");
+               // Console.WriteLine("Erro no pedido. Volte a tentar");
             }
             foreach (KeyValuePair<string,string> musicas in playlistAtual)
             try
@@ -94,186 +90,6 @@ namespace VLC_Control
             }
         }
 
-        public void play()
-        {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_play");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-        public void play(string name = null, string type = null)
-        {
-            Console.WriteLine(name + "->" + type);
-            Console.WriteLine(getFile(name));
-            string mrl = getFile(name);
-            Console.WriteLine("PATH    ---- " + mrl);
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=in_play&input=" + mrl);
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-        public void pause()
-        {
-            try
-            {
-
-                /*httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                WebResponse response = httpreq.GetResponse();
-                Stream str = response.GetResponseStream();
-                XmlDocument doc = new XmlDocument();
-                doc.Load(str);
-                foreach(String x in doc.ChildNodes)
-                //if(doc["status"].FirstChild.In == "paused")
-                if (!doc["state"].FirstChild.Value.Equals("paused") && !doc["state"].FirstChild.Value.Equals("stopped"))
-                {*/
-                    httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_pause");
-                    httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                    httpreq.GetResponse();
-                //}
-
-                    
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-
-        public void changeVolume(int op)// op = 0 - mute, -1 - lower, 1 - rise 
-        {
-            string varVol = "0";
-            //para ter o simbolo % no url temos q meter o código %25!!!
-            switch (op)
-            {
-                case 0:
-                    varVol = "0";
-                    break;
-                case 1:
-                    varVol = "+25";
-                    break;
-                case -1:
-                    varVol = "-25";
-                    break;
-                case 2:
-                    varVol = "+75";
-                    break;
-                default:
-                    varVol = "400";
-                    break;
-            }
-
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=volume&val=" + varVol); //mute
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-
-
-        }
-
-        public void fullScreen() //toggle fullscreen (caso nao esteja fullscreen, fica fullscreen, caso esteja, então desativa.
-        {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=fullscreen");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-        public void nextFile()//a bit bugged (problem of VLC and not ours!!!)
-        {
-            Console.WriteLine("VEIO AQUI");
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_next");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-
-        public void previousFile()//Not working to 100% -> vai para o inicio do ficheiro.. (problem of VLC and not ours!!!)
-        {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_previous");
-
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-        
-        public void loopPlaylist() {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_loop");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-        public void repeatPlaylist() {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_repeat");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
-
-        public void randomPlaylist() {
-            try
-            {
-                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_random");
-                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
-                httpreq.GetResponse();
-            }
-            catch (HttpListenerException)
-            {
-                Console.WriteLine("Erro no pedido. Volte a tentar");
-            }
-        }
         
         public string getFile(string fname)
         {
@@ -288,6 +104,25 @@ namespace VLC_Control
             return "";
         }
 
+        public string musicaAtual() {
+            string name = "Nenhuma";
+            httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml");
+            httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+            WebResponse response = httpreq.GetResponse();
+            Stream str = response.GetResponseStream();
+            XmlDocument doc = new XmlDocument();
+            doc.Load(str);
+            foreach (XmlNode x in doc.ChildNodes) {
+                string xml = x.InnerXml;
+                if (xml.Contains("<state>playing</state>")) {
+                    int zero = xml.IndexOf("<info name=\"title\">") + 20;
+                    name = xml.Substring(zero).Split('<')[0];
+                }
+
+            }
+            return name;
+        }
+
         private void createPlayLists()
         {
             string dir = System.IO.Directory.GetCurrentDirectory() + "\\musicas";
@@ -295,7 +130,7 @@ namespace VLC_Control
             if (System.IO.Directory.Exists(dir))
                 foreach (string s in System.IO.Directory.GetFiles(dir))
                 {
-                    Console.WriteLine("----------");
+                    
                     System.IO.FileInfo fi = null;
                     try
                     {
@@ -332,22 +167,31 @@ namespace VLC_Control
                                 this.playlist.Add(g, dic);
                                 tipos.Add(g);
                             }
+                            quantidade += 1;
                                 
                         }
                     }
-                    Console.WriteLine("Músicas a adicionar à playlist...");
-                    foreach (KeyValuePair<string, Dictionary<string, string>> entry in this.playlist)
+                    Console.WriteLine("Músicas adicionadas à playlist...");
+                    /*foreach (KeyValuePair<string, Dictionary<string, string>> entry in this.playlist)
                     {
-                        Console.Write(entry.Key + ": \n");
                         foreach (KeyValuePair<string, string> dic in entry.Value)
                             Console.WriteLine(dic.Key + ":\n" + dic.Value + "\n");
-                    }
+                    }*/
                 }
         }
 
         public void playlistByType(string tipo) {
-            playlistAtual = new Dictionary<string, string>();
-            playlistAtual = playlist[tipo];
+            if (tipo.Equals("TODAS")) { 
+                updatePlayListAtual();
+            this.tipo = "TODAS";
+            }
+            else {
+                playlistAtual = new Dictionary<string, string>();
+                playlistAtual = playlist[tipo];
+
+                this.tipo = tipo;
+            }
+            
             updateListInVLC();
         }
 
@@ -361,5 +205,184 @@ namespace VLC_Control
         public HashSet<string> getTipos() {
             return tipos;
         }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+
+        public string tipoAtual() {
+
+            return tipo == "" ? " a inicial " : tipo;
+        }
+
+        /* Pedidos HTTP */
+        public void play() 
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_play");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+        public void play(string name = null, string type = null) 
+        {
+            string mrl = getFile(name);
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=in_play&input=" + mrl);
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+        public void pause() 
+        {
+            try
+            {
+
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                WebResponse response = httpreq.GetResponse();
+                Stream str = response.GetResponseStream();
+                XmlDocument doc = new XmlDocument();
+                doc.Load(str);
+                foreach (XmlNode x in doc.ChildNodes)
+                    if (x.InnerXml.Contains("<state>playing</state>"))
+                    {
+                        httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_pause");
+                        httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                        httpreq.GetResponse();
+                    }
+
+
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+
+        public void changeVolume(int op)//  -2 lower more, -1 - lower, op = 0 - mute,1 - rise, 2 - rise more
+        {
+            string varVol = "0";
+            switch (op)
+            {
+                case 0:
+                    varVol = "0";
+                    break;
+                case 1:
+                    varVol = "+25";
+                    break;
+                case -1:
+                    varVol = "-25";
+                    break;
+                case 2:
+                    varVol = "+75";
+                    break;
+                case -2:
+                    varVol = "-75";
+                    break;
+                default:
+                    varVol = "400";
+                    break;
+            }
+
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=volume&val=" + varVol); //mute
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+
+
+        }
+
+        public void fullScreen()
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=fullscreen");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+        public void nextFile()
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_next");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+
+        public void previousFile()
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_previous");
+
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+        public void repeatPlaylist()
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_repeat");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
+        public void randomPlaylist()
+        {
+            try
+            {
+                httpreq = (HttpWebRequest)WebRequest.Create("http://" + this.address + "/requests/status.xml?command=pl_random");
+                httpreq.Headers[HttpRequestHeader.Authorization] = "Basic " + credential;
+                httpreq.GetResponse();
+            }
+            catch (HttpListenerException)
+            {
+                Console.WriteLine("Erro no pedido. Volte a tentar");
+            }
+        }
+
     }
 }

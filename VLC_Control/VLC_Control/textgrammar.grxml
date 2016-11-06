@@ -22,9 +22,66 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
       <item weight="4">
         <ruleref uri="#volume"/>
       </item>
-
-
+      <item weight="3">
+        <ruleref uri="#lista"/>
+      </item>
+      <item weight="5">
+        <ruleref uri="#ajuda"/>
+      </item>
+    
+      <item weight="5">
+        <ruleref uri="#voz"/>
+      </item>
     </one-of>
+  </rule>
+  
+  <rule id="voz">
+    <item>
+      <one-of>
+        <item weight="2">
+          Muda de voz <tag>out.vontade="voz"</tag>
+        </item>
+      </one-of>
+    </item>
+  </rule>
+  
+  <rule id="ajuda">
+    <item>
+      <one-of>
+        <item weight="2">
+          Quantas músicas existem?<tag>out.vontade = "qtdMusica"</tag>
+        </item>
+        <item weight="2">
+          Que tipos de música existem?<tag>out.vontade = "tiposList"</tag>
+        </item>
+        <item weight="2">
+          Que géneros existem?<tag>out.vontade = "tiposList"</tag>
+        </item>
+        <item weight="2">
+          Qual é a playlist que estou a ouvir agora?<tag>out.vontade = "tipoAtual"</tag>
+        </item>
+        <item weight="2">
+          Que música estou a ouvir agora?<tag>out.vontade = "musicaAtual"</tag>
+        </item>
+        <item weight="2">
+          Que música estou a ouvir?<tag>out.vontade = "musicaAtual"</tag>
+        </item>
+      
+      </one-of>
+    </item>
+  </rule>
+  
+  <rule id="lista">
+    <item>
+      <one-of>
+        <item weight="2">
+          Quero que a lista seja aleatória<tag>out.vontade = "random"</tag>
+        </item>
+        <item weight="2">
+          Quero que a lista se repita<tag>out.vontade = "repeat"</tag>
+        </item>
+      </one-of>
+    </item>
   </rule>
 
   <rule id="volume">
@@ -44,6 +101,9 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
         </item>
         <item weight="2">
           Está mesmo muito baixo<tag>out.vontade = "maisalto"</tag>
+        </item>
+      <item weight="2">
+          Está mesmo muito alto<tag>out.vontade = "maisbaixo"</tag>
         </item>
       </one-of>
     </item>
@@ -66,6 +126,9 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
   <rule id="tocar">
     <item>
       <one-of>
+        <item weight="2">
+          Quero ouvir todas as músicas<tag>out.vontade="todas"</tag>
+        </item>
         <item weight="2">
           Quero voltar a ouvir<tag>out.vontade = "reproduzir"</tag>
         </item>
@@ -103,14 +166,6 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
         <item weight="2">
           Quero ouvir a seguinte<tag>out.vontade = "seguinte"</tag>
         </item>
-        <item weight="1">
-          Quero ouvir a musica Bleed it out<tag>out.vontade = "Bleed it out"</tag>
-        </item>
-        <item weight="1">
-          Quero ouvir rock<tag>out.vontade = "Rock"</tag>
-        </item>
-        
-      
       </one-of>
     </item>
   </rule>
@@ -149,6 +204,9 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
         <item weight="2">
           Não quero ver mais<tag>out.vontade = "parar"</tag>
         </item>
+      <item weight="2">
+        Quero parar de ouvir<tag>out.vontade="parar"</tag>
+      </item>
       </one-of>
     </item>
   </rule>
@@ -168,6 +226,12 @@ xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0" >
         </item>
         <item weight="2">
           Preciso de uma pausa<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Preciso fazer uma pausa<tag>out.vontade = "pausar"</tag>
+        </item>
+        <item weight="2">
+          Preciso fazer um intervalo<tag>out.vontade = "pausar"</tag>
         </item>
         <item weight="2">
           Volto já<tag>out.vontade = "pausar"</tag>

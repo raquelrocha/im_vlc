@@ -11,15 +11,15 @@ namespace VLC_Control
 {
     class Synthesizer
     {
-        Request hReq;
+        Request request;
         SpeechSynthesizer synth;
         SoundPlayer player;
         Queue<KeyValuePair<string, int>> phrases = new Queue<KeyValuePair<string, int>>();
         bool noMore = true;
 
-        public Synthesizer(Request hReq)
+        public Synthesizer(Request request)
         {
-            this.hReq = hReq;
+            this.request = request;
             player = new SoundPlayer();
 
             synth = new SpeechSynthesizer();
@@ -54,22 +54,13 @@ namespace VLC_Control
             }
         }
 
-        public void changeGender(VoiceGender vg = VoiceGender.NotSet)
+        public void changeGender()
         {
-            synth.SelectVoiceByHints(vg, VoiceAge.NotSet, 0, new System.Globalization.CultureInfo("pt-PT"));
+            synth.SelectVoiceByHints((synth.Voice.Gender == VoiceGender.Male ? VoiceGender.Female : VoiceGender.Male), VoiceAge.NotSet, 0, new System.Globalization.CultureInfo("pt-PT"));
         }
 
         void synth_SpeakCompleted(object sender, SpeakCompletedEventArgs e) // verificar para que serve esta?
         {
-            /*if (player.Stream != null)
-            {
-                int volume = hReq.getVolume();
-                if (volume > 20)
-                    hReq.setVolume(10);
-                player.Stream.Position = 0;
-                player.PlaySync();
-                hReq.setVolume(volume);
-            }*/
             player.Stream.Position = 0;
             player.PlaySync();
             tts();

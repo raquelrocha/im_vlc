@@ -8,9 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace VLC_Control
-    /* TODO
-        Acção "Quero ouvir todas as músicas" -> voltar à playlist original    
-*/
+    
 {
     class SpeechRecognizer
     {
@@ -29,12 +27,8 @@ namespace VLC_Control
             sre = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("pt-PT"));
             sre.SetInputToDefaultAudioDevice();
 
-            Console.WriteLine(grammar);
-
-
             if (System.IO.File.Exists(grammar))
             {
-                Console.WriteLine("aqui");
                 g = new Grammar(grammar);
                 g.Enabled = true;
                 Console.WriteLine("Gramática geral carregada...");
@@ -87,12 +81,6 @@ namespace VLC_Control
                 tts.Speak("Pronto a receber pedidos");
                 Console.WriteLine("Pronto a receber ordens");
             }
-
-            // Keep the console window open.
-            while (true)
-            {
-                Console.ReadLine();
-            }
         }
 
 
@@ -101,9 +89,9 @@ namespace VLC_Control
             Console.WriteLine("---------------------------------------------");
             Console.WriteLine("Texto reconhecido: " + e.Result.Text);
             Console.WriteLine("Confiança: " + e.Result.Confidence);
-            if (e.Result.Confidence > 0.65)
+            if (e.Result.Confidence > 0.75)
             {
-                if (e.Result.Semantics.ContainsKey("reproduzir") && e.Result.Confidence > 0.4)
+                if (e.Result.Semantics.ContainsKey("musicas"))
                 {
                     KeyValuePair<string, SemanticValue>[] sem = e.Result.Semantics.ToArray();
                     string query = e.Result.Text;
@@ -111,7 +99,7 @@ namespace VLC_Control
                     query = query.Replace(remove, "").Trim();
                     Console.WriteLine("A procurar por: " + query);
                     tts.Speak("A procurar por: " + query);
-                    bool notfound = request.getFile(query).Equals(""); //Retorna "" se não encontrar
+                    bool notfound = request.getFile(query).Equals("");
                     if (notfound)
                         tts.Speak("Não encontro a música " + query);
                     else
@@ -120,7 +108,7 @@ namespace VLC_Control
                         request.play(query);
                     }
                 }
-                else if (e.Result.Semantics.ContainsKey("tipos") && e.Result.Confidence > 0.4)
+                else if (e.Result.Semantics.ContainsKey("tipos"))
                 {
                     KeyValuePair<string, SemanticValue>[] sem = e.Result.Semantics.ToArray();
                     string query = e.Result.Text;
@@ -136,7 +124,7 @@ namespace VLC_Control
                         Console.WriteLine("Existem músicas de " + query);
                         request.stop();
                         request.playlistByType(query);
-                        request.nextFile();
+                        request.play();
                     }
                         
                 }
@@ -147,6 +135,36 @@ namespace VLC_Control
 
                         switch (r.Value.Value.ToString())
                         {
+                            case "qtdMusica":
+                                Console.WriteLine("Tem " + request.getQuantidade() + " músicas.");
+                                tts.Speak("Tem " + request.getQuantidade() + " músicas.");
+                                break;
+                            case "tiposList":
+                                Console.WriteLine("Tem os géneros:");
+                                foreach (String genre in request.getTipos())
+                                {
+                                    Console.Write(genre + " ");
+                                    tts.Speak(genre + ", ");
+                                }
+                                Console.WriteLine();
+                                break;
+                            case "musicaAtual":
+                                Console.WriteLine("Está a ouvir " + request.musicaAtual());
+                                tts.Speak("Está a ouvir " + request.musicaAtual());
+                                break;
+                            case "tipoAtual":
+                                Console.WriteLine("Está a ouvir " + request.tipoAtual() == "Portuguesa" ? "música" : "" + request.tipoAtual());
+                                tts.Speak("Está a ouvir " + request.tipoAtual() == "Portuguesa" ? "música" : "" + request.tipoAtual());
+                                break;
+                            case "random":
+                                request.randomPlaylist();
+                                break;
+                            case "repeat":
+                                request.repeatPlaylist();
+                                break;
+                            case "todas":
+                                request.playlistByType("TODAS");
+                                break;
                             case "reproduzir":
                                 request.play();
                                 break;
@@ -165,6 +183,9 @@ namespace VLC_Control
                             case "maisalto":
                                 request.changeVolume(2);
                                 break;
+                            case "maisbaixo":
+                                request.changeVolume(-2);
+                                break;
                             case "baixo":
                                 request.changeVolume(-1);
                                 break;
@@ -178,19 +199,9 @@ namespace VLC_Control
                             case "notfullscreen":
                                 request.fullScreen();
                                 break;
-                            case "voz feminina":
-                                tts.changeGender(Microsoft.Speech.Synthesis.VoiceGender.Female);
+                            case "voz":
+                                tts.changeGender();
                                 tts.Speak("Já mudei de voz");
-                                break;
-                            case "voz masculina":
-                                tts.changeGender(Microsoft.Speech.Synthesis.VoiceGender.Male);
-                                tts.Speak("Já mudei de voz");
-                                break;
-                            case "Bleed it out":
-                                request.play("Bleed it out");
-                                break;
-                            case "Rock":
-                                //request.getMusicByType("Rock");
                                 break;
                             default:
                                 break;
@@ -213,13 +224,13 @@ namespace VLC_Control
             TODO:
             Separar os nomes dos ficheiros para 
             Filmes [nomes]  e Musicas[nomes]
-            Depois nesta função criar frases para filmes a frases para musicas
+            Depois nesta função criar frases para filmes e frases para musicas
             Feito agora: Apenas para musicas!
             */
             string[] frases = { "Quero ouvir a música" };
             Choices frase = new Choices(frases);
             GrammarBuilder elementoFrase = new GrammarBuilder(frase, 1, 1);
-            SemanticResultKey acaoSRK = new SemanticResultKey("reproduzir", elementoFrase);
+            SemanticResultKey acaoSRK = new SemanticResultKey("musicas", elementoFrase);
 
             HashSet<string> names = request.getPlaylistNames();
             if (names == null || names.Count == 0)
@@ -239,7 +250,7 @@ namespace VLC_Control
 
         private Grammar createTypeGrammar() {
 
-            string[] frases = { "Quero ouvir músicas de", "Quero ouvir " };
+            string[] frases = { "Quero ouvir músicas de", "Quero ouvir ", "Quero ouvir música" };
             Choices frase = new Choices(frases);
             GrammarBuilder elementoFrase = new GrammarBuilder(frase, 1, 1);
             SemanticResultKey acaoSRK = new SemanticResultKey("tipos", elementoFrase);
