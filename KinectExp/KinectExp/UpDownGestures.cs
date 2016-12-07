@@ -95,6 +95,26 @@ namespace VLC_KinectControl
                 return;
             }
 
+            // Swipe to right
+            if (ScanPositions((p1, p2) => Math.Abs(p2.Y - p1.Y) < SwipeMaximalHeight, // Height
+                (p1, p2) => p2.X - p1.X > -0.01f, // Progression to right
+                (p1, p2) => Math.Abs(p2.X - p1.X) > SwipeMinimalLength, // Length
+                SwipeMininalDuration, SwipeMaximalDuration)) // Duration
+            {
+                RaiseGestureDetected("SwipeToRight");
+                return;
+            }
+
+            // Swipe to left
+            if (ScanPositions((p1, p2) => Math.Abs(p2.Y - p1.Y) < SwipeMaximalHeight,  // Height
+                (p1, p2) => p2.X - p1.X < 0.01f, // Progression to right
+                (p1, p2) => Math.Abs(p2.X - p1.X) > SwipeMinimalLength, // Length
+                SwipeMininalDuration, SwipeMaximalDuration))// Duration
+            {
+                RaiseGestureDetected("SwipeToLeft");
+                return;
+            }
+            
         }
     }
 }

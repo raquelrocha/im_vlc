@@ -33,6 +33,7 @@ namespace VLC_KinectControl
 
             createPlayLists();
             updatePlayListAtual();
+            
         }
         public void updatePlayListAtual() {
             playlistAtual = new Dictionary<string, string>();
@@ -116,21 +117,22 @@ namespace VLC_KinectControl
                 string xml = x.InnerXml;
                 if (xml.Contains("<state>playing</state>")) {
                     int zero = xml.IndexOf("<info name=\"title\">") + 20;
-                    name = xml.Substring(zero).Split('<')[0];
+                    name = xml.Substring(zero-1).Split('<')[0];
                 }
 
             }
+            Console.WriteLine(name);
             return name;
         }
 
         private void createPlayLists()
         {
             string dir = System.IO.Directory.GetCurrentDirectory() + "\\musicas";
-
-            if (System.IO.Directory.Exists(dir))
+            
+            if (System.IO.Directory.Exists(dir)) {
                 foreach (string s in System.IO.Directory.GetFiles(dir))
                 {
-                    
+
                     System.IO.FileInfo fi = null;
                     try
                     {
@@ -157,20 +159,21 @@ namespace VLC_KinectControl
                         {
                             Dictionary<string, string> dic = new Dictionary<string, string>();
                             dic.Add(f.Tag.Title, fi.FullName);
-                            
+
                             if (g.Equals("Português"))
                             {
                                 this.playlist.Add("Portuguesa", dic);
                                 tipos.Add("Portuguesa");
                             }
-                            else{
+                            else {
                                 this.playlist.Add(g, dic);
                                 tipos.Add(g);
                             }
                             quantidade += 1;
-                                
+
                         }
                     }
+                }
                     Console.WriteLine("Músicas adicionadas à playlist...");
                     /*foreach (KeyValuePair<string, Dictionary<string, string>> entry in this.playlist)
                     {

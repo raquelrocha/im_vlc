@@ -36,20 +36,15 @@ namespace VLC_KinectControl
             //Add Property change to Manager
             km.PropertyChanged += km_PropertyChanged;
 
-
-            //Add Swipe Left or Right with the Right Hand
-            GestureDetector RightHandSwipeGestureDetector =
-                new SwipeGestureDetector(Microsoft.Kinect.JointType.HandRight);
-            RightHandSwipeGestureDetector.OnGestureDetected += new Action<string>(SwipeGestureDetector_OnGestureDetected); ;
-            km.GestureDetectors.Add(RightHandSwipeGestureDetector);
-
+            
+            /*
             //Add Swipe Left or Right with the Left Hand
             GestureDetector LeftHandSwipeGestureDetector =
                 new SwipeGestureDetector(Microsoft.Kinect.JointType.HandLeft);
             LeftHandSwipeGestureDetector.OnGestureDetected += new Action<string>(SwipeGestureDetector_OnGestureDetected); ;
             km.GestureDetectors.Add(LeftHandSwipeGestureDetector);
-
-
+            */
+            
             //Add UP and Down Gesture to Right Hand
             GestureDetector RightHandUpDownGestureDetector =
                 new UpDownGestures(Microsoft.Kinect.JointType.HandRight);
@@ -64,6 +59,7 @@ namespace VLC_KinectControl
             swipeText.Text = gesture + ":: time: " + DateTime.Now.Ticks;
             textBox1.Text += gesture + ":: time: " + DateTime.Now.Ticks + System.Environment.NewLine;
 
+
             switch (gesture)
             {
                 case "SwipeDown":
@@ -71,6 +67,15 @@ namespace VLC_KinectControl
                     break;
                 case "SwipeUp":
                     rqt.changeVolume(2);
+                    break;
+                case "SwipeToLeft":
+                    rqt.nextFile();
+
+                    textBox1.Text += "A tocar a música: " + rqt.musicaAtual() + System.Environment.NewLine;
+                    break;
+                case "SwipeToRight":
+                    rqt.previousFile();
+                    textBox1.Text += "A tocar a música: " + rqt.musicaAtual() + System.Environment.NewLine;
                     break;
             }
         }
